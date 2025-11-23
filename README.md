@@ -3,6 +3,10 @@ My project is a visual representation of tick sightings. It provides an interact
 
 The primary goal for this project is to make it easier for users to understand where ticks are being found, what species they may be as well as tips to help prevent ticks.
 
+### Video Demonstration
+Watch a walkthrough of the application here: [https://youtu.be/nuWnl1kZtDY]
+
+
 # Features of the Application
 
 ## Tick Sightings Map 
@@ -36,21 +40,45 @@ When you click a sighting, you'll see:
 - Optional: notes and image upload
 - Saves to API or local storage if offline
 
-## Species Identification Guide
+## Species Guide
 - Information on all five tick species
 - Physical descriptions and images
 - Habitat and seasonal activity
 - Risk levels to pets
 
-## Seasonal Activity Chart
-
-Monthly breakdown of tick sightings
-Filter by city or year
-Helps identify when ticks are most active
+## Seasonal Activity
+- Monthly breakdown of tick sightings
+- Filter by city or year
+- Helps identify when ticks are most active
 
 ## Prevention Tips
+- Always visible advice on protecting pets
+- Information on tick treatments
+- Tips on regular checks and environmental management
 
-Always visible advice on protecting pets
-Information on tick treatments
-Tips on regular checks and environmental management
+# How to Use :)
+
+## Viewing Sightings
+1. Open index.html in your browser
+2. Use filters to narrow down sightings
+3. Click markers or results to see details
+4. Check out the Species Guide and Seasonal Activity
+
+## Reporting Sightings
+1. Click "Report a Sighting"
+2. Fill in the required information
+3. Submit - your sighting appears on the map
+
+## Setup
+1. Download all project files
+2. Open index.html in any modern browser
+3. No installation or build process needed
+
+## Privacy
+- No personal data is collected. Sightings are anonymous and location data is only at city level.
+
+## Credits
+- Elanco for the project brief and API
+- OpenStreetMap contributors
+
 
