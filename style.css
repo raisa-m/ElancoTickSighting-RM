@@ -9,7 +9,7 @@ body {
     background: #f5f7fa;
 }
 
-/* Header Filters */
+/* filters header */
 .header-container {
     background: white;
     border-bottom: 2px solid #e0e0e0;
@@ -106,14 +106,14 @@ body {
     background: #f5f5f5;
 }
 
-/* Main Layout */
+/* main section */
 .main-container {
     display: flex;
     height: calc(100vh - 110px);
     gap: 0;
 }
 
-/* Map Container */
+/* map section */
 .map-container {
     flex: 1;
     position: relative;
@@ -140,7 +140,7 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-/* Loading Indicator */
+/* loading indicator */
 .loading-indicator {
     position: absolute;
     top: 50%;
@@ -173,7 +173,7 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-/* Map Legend */
+/* map legend */
 #mapLegend {
     position: absolute;
     bottom: 35px;
@@ -211,7 +211,7 @@ body {
 .older  { background: #7E57C2; }
 .recent { background: #656a71; }
 
-/* Sidebars */
+/* sidebars */
 .sidebar {
     width: 320px;
     background: white;
@@ -289,7 +289,7 @@ body {
     opacity: 0.6;
 }
 
-/* Timeline */
+/* timeline */
 .timeline-container {
     background: #f9fafb;
     border: 1px solid #e5e7eb;
@@ -330,7 +330,7 @@ body {
     color: #333;
 }
 
-/* Results Section */
+/* results bar */
 .result-card {
     background: white;
     border: 1px solid #e5e7eb;
@@ -351,7 +351,7 @@ body {
     background: #eff6ff;
 }
 
-/* Prevention Tips */
+/* prevention tips */
 .prevention-section {
     margin-top: 30px;
     padding-top: 25px;
@@ -393,9 +393,9 @@ body {
     color: #333;
 }
 
-/* Action Buttons - Removed from sidebar */
+/* action buttons */
 
-/* Modal Styles */
+/* modal styles */
 .modal {
     display: none;
     position: fixed;
@@ -461,7 +461,7 @@ body {
     color: #333;
 }
 
-/* Form Styles */
+/* form styles */
 #reportForm {
     padding: 30px;
 }
@@ -621,14 +621,14 @@ body {
     background: #059669;
 }
 
-/* Species Guide */
+/* species guide */
 .species-guide-content {
     padding: 30px;
     display: grid;
     gap: 20px;
 }
 
-/* Flex container for each species block */
+/* species cards */
 .species-guide-content {
     padding: 30px;
     display: grid;
@@ -661,7 +661,7 @@ body {
     padding: 10px;
 }
 
-/* Responsive design for smaller screens */
+/* smaller screen adaptive */
 @media (max-width: 768px) {
     .species-header {
         flex-direction: column;
@@ -688,7 +688,7 @@ body {
     line-height: 1.6;
 }
 
-/* Seasonal Activity */
+/* seasonal activity */
 .seasonal-content {
     padding: 30px;
 }
