@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Tick Sightings</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header with Filters -->
+    <div class="header-container">
+        <div class="filters-section">
+            <div class="filters-header">
+                 <img src="filtericon.jpg"width="20" height="20">
+                <span class="filters-title">Filters</span>
+            </div>
+            <div class="filters-controls">
+                <div class="filter-item">
+                    <label>Date Range:</label>
+                    <select id="dateFilter">
+                        <option value="">All dates</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                    </select>
+                </div>
+                
+                <div class="filter-item">
+                    <label>Species:</label>
+                    <select id="speciesFilter">
+                        <option value="">All species</option>
+                        <option value="Marsh tick">Marsh tick</option>
+                        <option value="Southern rodent tick">Southern rodent tick</option>
+                        <option value="Passerine tick">Passerine tick</option>
+                        <option value="Fox/badger tick">Fox/badger tick</option>
+                        <option value="Tree-hole tick">Tree-hole tick</option>
+                    </select>
+                </div>
+                
+                <div class="filter-item">
+                    <label>Severity:</label>
+                    <select id="severityFilter">
+                        <option value="">All severities</option>
+                        <option value="Recent">Recent</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                        <option value="Older">Older</option>
+                    </select>
+                </div>
+                
+                <button class="reset-btn" id="resetBtn">RESET</button>
+                
+                <div class="button-divider"></div>
+                
+                <button class="action-btn-header" id="reportSightingBtn">Report a Sighting</button>
+                <button class="action-btn-header" id="speciesGuideBtn">Species Guide</button>
+                <button class="action-btn-header" id="seasonalActivityBtn">Seasonal Activity</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Map Section -->
+        <div class="map-container">
+            <div class="map-header">UK Tick Sightings</div>
+            <div id="map"></div>
+            
+            <!-- Map Legend -->
+            <div id="mapLegend">
+                <div class="legend-item"><span class="dot low"></span>Low</div>
+                <div class="legend-item"><span class="dot med"></span>Med</div>
+                <div class="legend-item"><span class="dot high"></span>High</div>
+                <div class="legend-item"><span class="dot older"></span>Older</div>
+                <div class="legend-item"><span class="dot recent"></span>Recent</div>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="loading-indicator">
+                <div class="spinner"></div>
+                <p>Loading sightings...</p>
+            </div>
+        </div>
+
+        <!-- Left Sidebar - Results -->
+        <div class="sidebar">
+            <h2 class="sidebar-title">Results</h2>
+            <div id="resultsList"></div>
+        </div>
+
+        <!-- Right Sidebar - Details -->
+        <div class="sidebar">
+            <h2 class="sidebar-title">Tick Sighting details</h2>
+            
+            <div class="details-box" id="detailsBox">
+                <p style="color: #999; text-align: center; padding: 40px 0;">Click a marker to view details</p>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" id="directionsBtn" disabled>Get Directions</button>
+                <button class="btn btn-secondary" id="shareBtn" disabled>Share</button>
+            </div>
+
+            <!-- Timeline View -->
+            <div id="timelineSection" style="display: none;">
+                <h3 class="prevention-title">Activity Timeline</h3>
+                <div id="timelineContent" class="timeline-container"></div>
+            </div>
+
+            <!-- Prevention Tips -->
+            <div class="prevention-section">
+                <h3 class="prevention-title">Prevention Tips:</h3>
+                 <img src="checkticks.jpg"width="290" height="290">
+                <div class="prevention-tips">
+                    <ul>
+                        <li><strong>Use veterinarian advised tick preventative treatments for your pets. Important:</strong> Never use a dog tick treatment on a cat, as some products are toxic to cats.</li>
+                        <li>Perform regular checks to be able to detect ticks early.</li>
+                        <li>Manage your environment by avoiding places where ticks are common like long grass and woods.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Sighting Modal -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Report a Tick Sighting</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="reportForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date: <span class="required">*</span></label>
+                        <input type="date" id="sightingDate" required>
+                        <span class="error-message" id="dateError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Time: <span class="required">*</span></label>
+                        <input type="time" id="sightingTime" required>
+                        <span class="error-message" id="timeError"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Location: <span class="required">*</span></label>
+                    <input type="text" id="sightingLocation" placeholder="e.g., Manchester, London, Glasgow" required>
+                    <span class="error-message" id="locationError"></span>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Species: <span class="required">*</span></label>
+                        <select id="sightingSpecies" required>
+                            <option value="">Select species</option>
+                            <option value="Marsh tick">Marsh tick</option>
+                            <option value="Southern rodent tick">Southern rodent tick</option>
+                            <option value="Passerine tick">Passerine tick</option>
+                            <option value="Fox/badger tick">Fox/badger tick</option>
+                            <option value="Tree-hole tick">Tree-hole tick</option>
+                        </select>
+                        <span class="error-message" id="speciesError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Severity: <span class="required">*</span></label>
+                        <select id="sightingSeverity" required>
+                            <option value="">Select severity</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                        <span class="error-message" id="severityError"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Notes:</label>
+                    <textarea id="sightingNotes" rows="5" placeholder="Add any additional details about the sighting..."></textarea>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Image:</label>
+                    <input type="file" id="sightingImage" accept="image/*">
+                    <span class="info-message">Accepted formats: JPG, PNG (max 5MB)</span>
+                </div>
+                
+                <div id="formMessages" class="form-messages"></div>
+                
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn-submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Species Guide Modal -->
+    <div id="speciesModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2>Tick Species Identification Guide</h2>
+                <button class="close-btn" id="closeSpeciesModal">&times;</button>
+            </div>
+            <div class="species-guide-content">
+                <div class="species-card">
+                    <h3>Marsh Tick (Ixodes apronophorus)</h3>
+                    <p><strong>Appearance:</strong> Small, dark brown to black tick, 2-4mm in length</p>
+                    <p><strong>Habitat:</strong> Wetlands, marshes, and damp grasslands</p>
+                    <p><strong>Season:</strong> Most active March-November</p>
+                    <p><strong>Risk:</strong> Low risk to pets, primarily feeds on birds</p>
+                </div>
+                <div class="species-image">
+                <img src="marshtick.jpg" alt="Marsh Tick">
+            </div>
+                
+                <div class="species-card">
+                    <h3>Southern Rodent Tick (Ixodes acuminatus)</h3>
+                    <p><strong>Appearance:</strong> Reddish-brown, 3-5mm, oval-shaped body</p>
+                    <p><strong>Habitat:</strong> Woodlands, fields, areas with rodent populations</p>
+                    <p><strong>Season:</strong> Year-round, peaks in spring and autumn</p>
+                    <p><strong>Risk:</strong> Medium risk, can transmit diseases to small mammals</p>
+                </div>
+                <div class="species-image">
+                <img src="southernrodenttick.jpg" alt="Southern Rodent Tick">
+            </div>
+                
+                <div class="species-card">
+                    <h3>Passerine Tick (Dermacentor frontalis)</h3>
+                    <p><strong>Appearance:</strong> Brown with pale markings, 4-6mm</p>
+                    <p><strong>Habitat:</strong> Parks, gardens, areas frequented by birds</p>
+                    <p><strong>Season:</strong> Spring and summer (April-September)</p>
+                    <p><strong>Risk:</strong> Low risk to mammals, primarily affects birds</p>
+                </div>
+                <div class="species-image">
+                <img src="passerinetick.jpg" alt="Passerine Tick">
+            </div>
+                
+                <div class="species-card">
+                    <h3>Fox/Badger Tick (Ixodes canisuga)</h3>
+                    <p><strong>Appearance:</strong> Dark brown to black, 3-5mm, elongated</p>
+                    <p><strong>Habitat:</strong> Woodlands, hedgerows, rural areas</p>
+                    <p><strong>Season:</strong> Most active spring through autumn</p>
+                    <p><strong>Risk:</strong> High risk to dogs and cats, can transmit diseases</p>
+                </div>
+                <div class="species-image">
+                <img src="foxbadgertick.jpg" alt="Fox/Badger Tick">
+            </div>
+
+            <div class="species-card">
+                <h3>Tree-hole Tick (Ixodes arboricola)</h3>
+                <p><strong>Appearance:</strong> Small reddish-brown tick, 2-3mm in length</p>
+                <p><strong>Habitat:</strong> Tree hollows, woodlands, forested areas</p>
+                <p><strong>Season:</strong> Active spring through autumn (April-October)</p>
+                <p><strong>Risk:</strong> Low risk to pets, primarily feeds on birds and small mammals</p>
+            </div>
+              <div class="species-image">
+                <img src="treeholetick.jpg" alt="Tree-hole Tick">
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seasonal Activity Modal -->
+    <div id="seasonalModal" class="modal">
+        <div class="modal-content large-modal">
+            <div class="modal-header">
+                <h2>Seasonal Activity Chart</h2>
+                <button class="close-btn" id="closeSeasonalModal">&times;</button>
+            </div>
+            <div class="seasonal-content">
+                <div class="chart-controls">
+                    <div class="form-group">
+                        <label>Select City:</label>
+                        <select id="chartCity">
+                            <option value="">All Cities</option>
+                            <option value="London">London</option>
+                            <option value="Manchester">Manchester</option>
+                            <option value="Glasgow">Glasgow</option>
+                            <option value="Sheffield">Sheffield</option>
+                            <option value="Liverpool">Liverpool</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Year:</label>
+                        <select id="chartYear">
+                            <option value="">All Years</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                        </select>
+                    </div>
+                </div>
+                <canvas id="seasonalChart" width="600" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
