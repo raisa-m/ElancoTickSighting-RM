@@ -245,7 +245,8 @@ function selectSighting(s, marker) {
     const formattedDate = new Date(s.date).toLocaleDateString();  // format date for display
     const formattedTime = s.time || new Date(s.date).toLocaleTimeString();  // use time field or extract from date
     
-    detailsBox.innerHTML = `  // populate details panel with sighting information
+    // populate details panel with sighting information
+    detailsBox.innerHTML = `
         <p><strong>Date:</strong> ${formattedDate}</p>
         <p><strong>Time:</strong> ${formattedTime}</p>
         <p><strong>ID:</strong> ${s.id}</p>
@@ -253,8 +254,8 @@ function selectSighting(s, marker) {
         <p><strong>Species:</strong> ${s.species}</p>
         <p><strong>Latin Name:</strong> ${s.latinName || 'N/A'}</p>
         <p><strong>Severity:</strong> ${severity}</p>
-        ${s.notes ? `<p><strong>Notes:</strong> ${s.notes}</p>` : ''}  // only show notes if they exist
-    `;
+        ${s.notes ? `<p><strong>Notes:</strong> ${s.notes}</p>` : ''} 
+    `; // only show notes if they exist
     
     document.getElementById("directionsBtn").disabled = false;  // enable directions button
     document.getElementById("shareBtn").disabled = false;  // enable share button
@@ -279,7 +280,8 @@ function showTimeline(location) {
         const timelineSection = document.getElementById('timelineSection');  // get timeline container
         const timelineContent = document.getElementById('timelineContent');  // get timeline content area
         
-        timelineContent.innerHTML = locationSightings.map(s => `  // create html for each sighting
+        // create html for each sighting
+        timelineContent.innerHTML = locationSightings.map(s => ` 
             <div class="timeline-item">
                 <div class="timeline-date">${new Date(s.date).toLocaleDateString()}</div>
                 <div class="timeline-text">${s.species} reported</div>
